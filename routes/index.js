@@ -18,19 +18,23 @@ module.exports = function (db) {
     const email = req.body.email
     const password = req.body.password
 
-    db.get('select * from user where email = ?', [email], (err, user) => {
+    db.query('select * from users where email = $1', [email], (err, user) => {
       if (err) {
         req.flash('loginMessage', 'Gagal Login')
         return res.redirect('/login')
       }
-      if (!user) {
+      if (user.rows.length == 0) {
         req.flash('loginMessage', 'User Tidak Ditemukan')
         return res.redirect('/login')
       }
-      bcrypt.compare(password, user.password, function (err, result) {
+      bcrypt.compare(password, user.rows[0].pass, function (err, result) {
         if (result) {
-          req.session.user = user
-          res.redirect('/')
+          req.session.user = user.rows[0]
+          if (user.rows[0].isadmin) {
+            res.redirect('/users')
+          } else {
+            res.redirect('/')
+          }
         } else {
           req.flash('loginMessage', 'Password Salah')
           res.redirect('/login')
