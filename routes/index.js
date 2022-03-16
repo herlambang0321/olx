@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 /* GET home page. */
 module.exports = function (db) {
@@ -42,22 +44,22 @@ module.exports = function (db) {
     res.render('register')
   })
 
-  router.post('/register', function (err, res) {
+  router.post('/register', function (req, res) {
     const email = req.body.email
     const fullname = req.body.fullname
     const password = req.body.password
 
     bcrypt.hash(password, saltRounds, function (err, hash) {
-      db.run('insert into user (email, password, fullname) values (?, ?, ?)', [email, hash, fullname], (err) => {
+      db.query('insert into users (email, pass, fullname, isadmin) values ($1, $2, $3, $4)', [email, hash, fullname, true], (err) => {
         if (err) return res.send('Register Gagal')
-        res.redirect('login')
+        res.redirect('/login')
       })
     })
   })
 
   router.get('/logout', function (err, res) {
     res.session.destroy(function (err) {
-      res.redirect('login')
+      res.redirect('/login')
     })
   })
 

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var path = require('path')
 const helpers = require('../helpers/util')
 
 /* GET home page. */
