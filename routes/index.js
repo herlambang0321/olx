@@ -7,7 +7,7 @@ const saltRounds = 10;
 module.exports = function (db) {
 
   router.get('/', function (req, res, next) {
-    res.render('index', { title: 'Express' });
+    res.render('index', { title: 'OLX', user: req.session.user });
   });
 
   router.get('/login', function (req, res) {
@@ -31,7 +31,7 @@ module.exports = function (db) {
         if (result) {
           req.session.user = user.rows[0]
           if (user.rows[0].isadmin) {
-            res.redirect('/users')
+            res.redirect('/categories')
           } else {
             res.redirect('/')
           }
@@ -54,7 +54,7 @@ module.exports = function (db) {
     const password = req.body.password
 
     bcrypt.hash(password, saltRounds, function (err, hash) {
-      db.query('insert into users (email, pass, fullname, isadmin) values ($1, $2, $3, $4)', [email, hash, fullname, true], (err) => {
+      db.query('insert into users (email, pass, fullname, isadmin) values ($1, $2, $3, $4)', [email, hash, fullname, false], (err) => {
         if (err) return res.send('Register Gagal')
         res.redirect('/login')
       })

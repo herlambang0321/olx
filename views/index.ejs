@@ -97,7 +97,7 @@
         </select>
         <input type="text">
       </form>
-      <a class="btn" href="/login">Login</a>
+      <a href="<%= user ? '/profile' : '/login' %>"><%= user ? user.fullname : 'Sign in' %></a>
       <a class="btn" href="">Jual</a>
     </div>
     <div class="carousel">
