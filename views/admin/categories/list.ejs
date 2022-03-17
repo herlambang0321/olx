@@ -1,7 +1,6 @@
 <%- include('../partials/header') %>
-
-  <h1>Welcome, <%= user.fullname %> <a href="/logout" class="btn btn-danger">Keluar</a></h1>
-  <h1>TODO</h1>
+<%- include('../partials/menu') %>
+  <h1>Categories</h1>
   <% if(successMessage.length > 0) { %>
     <div class="alert alert-success" role="alert">
       <%= successMessage %>
