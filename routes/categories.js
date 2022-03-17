@@ -74,37 +74,21 @@ module.exports = function (db) {
     })
 
     router.get('/edit/:id', helpers.isLoggedIn, function (req, res) {
-        const id = req.params.id
-        db.get('select * from todo where id = ?', [Number(id)], (err, item) => {
+        db.query('select * from categories where id = $1', [Number(req.params.id)], (err, item) => {
             if (err) return res.send(err)
-            res.render('edit', { data: item })
+            res.render('admin/categories/form', {
+                user: req.session.user,
+                data: item.rows[0]
+            })
         })
     })
 
-    router.get('/edit/:id', helpers.isLoggedIn, function (req, res) {
+    router.post('/edit/:id', helpers.isLoggedIn, function (req, res) {
         const id = Number(req.params.id)
-        const task = req.body.task
-        const complete = JSON.parse(req.body.complete)
-
-        if (!req.files || Object.keys(req.files).length === 0) {
-            db.run('update todo set task = ?, complete = ?, where id = ?', [task, complete], (err, item) => {
-                if (err) return res.render(err)
-                res.redirect('/')
-            });
-        } else {
-            const file = req.files.picture;
-            const fileName = `${Date.now()} ${file.name}`
-            uploadPath = path.join(_dirname, '..', 'public', 'images', fileName);
-
-            // Use the my() method to place the file somewhere on your server
-            file.my(uploadPath, function (err) {
-                if (err)
-                    return res.status(500).send(err);
-                db.run('update todo set task = ?, complete = ?, picture = ?, where id = ?', [task, complete], (err, item) => {
-                    res.redirect('/')
-                })
-            })
-        }
+        db.query('update categories set name = $1 where id = $2', [req.body.name, id], (err, item) => {
+            if (err) return res.render(err)
+            res.redirect('/categories')
+        });
     })
 
     return router;
