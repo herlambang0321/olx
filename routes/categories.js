@@ -35,7 +35,7 @@ module.exports = function (db) {
             sql += ` order by ${req.query.sortBy} ${req.query.sortMode}`
 
             sql += ' limit $1 offset $2'
-            
+
             db.query(sql, [limit, offset], (err, data) => {
                 if (err) return res.send(err)
                 res.render('admin/categories/list', {
@@ -51,15 +51,16 @@ module.exports = function (db) {
     })
 
     router.get('/add', helpers.isLoggedIn, function (req, res) {
-        res.render('add')
+        res.render('admin/categories/form', {
+            user: req.session.user,
+            data: {}
+        })
     })
 
     router.post('/add', function (req, res) {
-        let task = req.body.task
-        // query binding
-        db.run('insert into todo(task, userid) valuse (?, ?)', [task, req.session.user], (err) => {
+        db.query('insert into categories(name) values ($1)', [req.body.name], (err) => {
             if (err) return res.send(err)
-            res.redirect('/')
+            res.redirect('/categories')
         })
     })
 
@@ -98,7 +99,7 @@ module.exports = function (db) {
             // Use the my() method to place the file somewhere on your server
             file.my(uploadPath, function (err) {
                 if (err)
-                return res.status(500).send(err);
+                    return res.status(500).send(err);
                 db.run('update todo set task = ?, complete = ?, picture = ?, where id = ?', [task, complete], (err, item) => {
                     res.redirect('/')
                 })
