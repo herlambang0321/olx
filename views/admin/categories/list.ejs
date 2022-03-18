@@ -34,17 +34,17 @@
               <tr>
                 <th><a
                     href="<%= url.replace(`sortBy=${query.sortBy}`, `sortBy=id`).replace(`sortMode=${query.sortMode}`, `sortMode=${query.sortMode == 'asc' ? 'desc' : 'asc'}`)  %>"><i
-                      class="fa-solid <%= query.sortBy == 'id' ? query.sortMode == 'asc' ? 'fa-sort-up' : 'fa-sort-down' : 'fa-sort' %>"></i>ID</a>
-                </th>
+                      class="fa-solid <%= query.sortBy == 'id' ? query.sortMode == 'asc' ? 'fa-sort-up' : 'fa-sort-down' : 'fa-sort' %>"></i></a>
+                  Id</th>
                 <th><a
                     href="<%= url.replace(`sortBy=${query.sortBy}`, `sortBy=name`).replace(`sortMode=${query.sortMode}`, `sortMode=${query.sortMode == 'asc' ? 'desc' : 'asc'}`)  %>"><i
-                      class="fa-solid <%= query.sortBy == 'name' ? query.sortMode == 'asc' ? 'fa-sort-up' : 'fa-sort-down' : 'fa-sort' %>"></i>Name</a>
-                </th>
+                      class="fa-solid <%= query.sortBy == 'name' ? query.sortMode == 'asc' ? 'fa-sort-up' : 'fa-sort-down' : 'fa-sort' %>"></i></a>
+                  Name</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <% data.forEach(item=> { %>
+              <% data.forEach((item)=> { %>
                 <tr>
                   <td>
                     <%= item.id %>
@@ -53,8 +53,10 @@
                     <%= item.name %>
                   </td>
                   <td>
-                    <a href="/categories/edit/<%= item.id %>" class="btn btn-success"><i class="fa-solid fa-pencil"></i></a>
-                    <a href="/categories/delete/<%= item.id %>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                    <a href="/categories/edit/<%= item.id %>" class="btn btn-success"><i
+                        class="fa-solid fa-pencil"></i></a>
+                    <a href="/categories/delete/<%= item.id %>" class="btn btn-danger"><i
+                        class="fa-solid fa-trash"></i></a>
                   </td>
                 </tr>
                 <% }) %>

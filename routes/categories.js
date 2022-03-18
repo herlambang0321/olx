@@ -7,7 +7,7 @@ const helpers = require('../helpers/util')
 module.exports = function (db) {
 
     router.get('/', helpers.isLoggedIn, function (req, res) {
-        const url = req.url == '/' ? '/categories?page=1&sortBy=id&sortmode=asc' : req.url.replace('/', '/categories')
+        const url = req.url == '/' ? '/categories?page=1&sortBy=id&sortMode=asc' : req.url.replace('/', '/categories')
 
         const params = []
 
@@ -15,7 +15,7 @@ module.exports = function (db) {
             params.push(`name ilike '%${req.query.name}%'`)
         }
 
-        const page = Number(req.query.page) || 1
+        const page = req.query.page || 1
         const limit = 3
         const offset = (page - 1) * limit
         let sql = 'select count(*) as total from categories';
@@ -42,7 +42,8 @@ module.exports = function (db) {
                     data: data.rows,
                     page,
                     pages,
-                    query: req.query, url,
+                    query: req.query,
+                    url,
                     user: req.session.user,
                     successMessage: req.flash('successMessage')
                 })
@@ -65,11 +66,11 @@ module.exports = function (db) {
     })
 
     router.get('/delete/:id', helpers.isLoggedIn, function (req, res) {
-        const id = req.params.id
-        db.run('delete from todo where id = ?', [Number(id)], (err, item) => {
+        const id = Number(req.params.id)
+        db.query('delete from categories where id = $1', [id], (err) => {
             if (err) return res.send(err)
             req.flash(`successMessage, ID : ${id} Berhasil Dihapus`)
-            res.redirect('/')
+            res.redirect('/categories')
         })
     })
 
@@ -85,7 +86,7 @@ module.exports = function (db) {
 
     router.post('/edit/:id', helpers.isLoggedIn, function (req, res) {
         const id = Number(req.params.id)
-        db.query('update categories set name = $1 where id = $2', [req.body.name, id], (err, item) => {
+        db.query('update categories set name = $1 where id = $2', [req.body.name, id], (err) => {
             if (err) return res.render(err)
             res.redirect('/categories')
         });
