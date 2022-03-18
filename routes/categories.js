@@ -69,7 +69,7 @@ module.exports = function (db) {
         const id = Number(req.params.id)
         db.query('delete from categories where id = $1', [id], (err) => {
             if (err) return res.send(err)
-            req.flash(`successMessage, ID : ${id} Berhasil Dihapus`)
+            req.flash('successMessage', `ID : ${id} Berhasil Dihapus`)
             res.redirect('/categories')
         })
     })
