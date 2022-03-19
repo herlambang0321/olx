@@ -2,7 +2,7 @@
     <%- include('../partials/menu') %>
         <div class="container">
             <div class="card">
-                <form action="" method="post">
+                <form action="" method="post" enctype="multipart/form-data">
                     <div class="card-header">
                         <h1>FORM</h1>
                     </div>
@@ -10,10 +10,44 @@
                         <div class="mb-3 row">
                             <label for="fullname" class="col-sm-2 col-form-label">Fullname</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="fullname" name="fullname" value="<%= data.fullname %>">
+                                <input type="text" class="form-control" id="fullname" name="fullname"
+                                    value="<%= data.fullname %>">
                             </div>
                         </div>
 
+                        <div class="mb-3 row">
+                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" name="email"
+                                    value="<%= data.email %>">
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                    value="<%= data.phone %>">
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="pass" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="pass" name="pass"
+                                    value="<%= data.pass %>">
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="avatar" name="avatar">
+                            </div>
+                        </div>
+                        <% if(data.avatar) { %>
+                            <img src="/images/<%= data.avatar %>" alt="">
+                            <% } %>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info"><i class="fa-solid fa-floppy-disk"></i></button>

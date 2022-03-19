@@ -11,8 +11,20 @@ module.exports = function (db) {
 
         const params = []
 
-        if (req.query.name) {
-            params.push(`name ilike '%${req.query.name}%'`)
+        if (req.query.fullname) {
+            params.push(`fullname ilike '%${req.query.fullname}%'`)
+        }
+
+        if (req.query.email) {
+            params.push(`email ilike '%${req.query.email}%'`)
+        }
+
+        if (req.query.phone) {
+            params.push(`phone ilike '%${req.query.phone}%'`)
+        }
+
+        if (req.query.isadmin) {
+            params.push(`isadmin = ${req.query.isadmin}`)
         }
 
         const page = req.query.page || 1
