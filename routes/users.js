@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var path = require('path')
 const helpers = require('../helpers/util')
+const bycrpt = require('bcrypt');
+const { parse } = require('path');
+const saltRounds = 10;
 
 /* GET home page. */
 module.exports = function (db) {
@@ -71,9 +74,40 @@ module.exports = function (db) {
     })
 
     router.post('/add', function (req, res) {
-        db.query('insert into users(name) values ($1)', [req.body.name], (err) => {
-            if (err) return res.send(err)
-            res.redirect('/users')
+        bycrpt.hash(req.body.pass, saltRounds, function (err, hash) {
+            if (err) {
+                console.log(err)
+                req.flash('successMessage', `gagal bikin password`)
+                return res.redirect('/users')
+            }
+            if (!req.files || Object.keys(req.files).length === 0) {
+                db.query('insert into users(fullname, email, phone, pass, isadmin) values ($1, $2, $3, $4, $5)', [req.body.fullname, req.body.email, req.body.phone, hash, JSON.parse(req.body.isadmin)], (err) => {
+                    if (err) {
+                        console.log(err)
+                        req.flash('successMessage', `gagal bikin user`)
+                        return res.redirect('/users')
+                    }
+                    res.redirect('/users')
+                })
+            } else {
+                const file = req.files.avatar;
+                const fileName = `${Date.now()}-${file.name}`
+                uploadPath = path.join(__dirname, '..', 'public', 'images', 'avatars', fileName);
+
+                // Use the mv() method to place the file somewhere on your server
+                file.mv(uploadPath, function (err) {
+                    if (err)
+                        return res.status(500).send(err);
+                    db.query('insert into users(fullname, email, phone, pass, isadmin, avatar) values ($1, $2, $3, $4, $5, $6)', [req.body.fullname, req.body.email, req.body.phone, hash, JSON.parse(req.body.isadmin), fileName], (err) => {
+                        if (err) {
+                            console.log(err)
+                            req.flash('successMessage', `gagal bikin user plus avatar`)
+                            return res.redirect('/users')
+                        }
+                        res.redirect('/users')
+                    });
+                });
+            }
         })
     })
 
@@ -98,10 +132,34 @@ module.exports = function (db) {
 
     router.post('/edit/:id', helpers.isLoggedIn, function (req, res) {
         const id = Number(req.params.id)
-        db.query('update users set name = $1 where id = $2', [req.body.name, id], (err) => {
-            if (err) return res.render(err)
-            res.redirect('/users')
-        });
+        if (!req.files || Object.keys(req.files).length === 0) {
+            db.query('update users set fullname = $1, email = $2, phone = $3, isadmin = $4 where id = $5', [req.body.fullname, req.body.email, req.body.phone, JSON.parse(req.body.isadmin), id], (err) => {
+                if (err) {
+                    console.log(err)
+                    req.flash('successMessage', `gagal bikin user`)
+                    return res.redirect('/users')
+                }
+                res.redirect('/users')
+            })
+        } else {
+            const file = req.files.avatar;
+            const fileName = `${Date.now()}-${file.name}`
+            uploadPath = path.join(__dirname, '..', 'public', 'images', 'avatars', fileName);
+
+            // Use the mv() method to place the file somewhere on your server
+            file.mv(uploadPath, function (err) {
+                if (err)
+                    return res.status(500).send(err);
+                db.query('update users set fullname = $1, email = $2, phone = $3, isadmin = $4, avatar = $5  where id = $6', [req.body.fullname, req.body.email, req.body.phone, JSON.parse(req.body.isadmin), fileName, id], (err) => {
+                    if (err) {
+                        console.log(err)
+                        req.flash('successMessage', `gagal bikin user plus avatar`)
+                        return res.redirect('/users')
+                    }
+                    res.redirect('/users')
+                });
+            });
+        }
     })
 
     return router;

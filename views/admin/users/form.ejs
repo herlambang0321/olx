@@ -11,7 +11,7 @@
                             <label for="fullname" class="col-sm-2 col-form-label">Fullname</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="fullname" name="fullname"
-                                    value="<%= data.fullname %>">
+                                    value="<%= data.fullname %>" required>
                             </div>
                         </div>
 
@@ -19,7 +19,7 @@
                             <label for="email" class="col-sm-2 col-form-label">Email</label>
                             <div class="col-sm-10">
                                 <input type="email" class="form-control" id="email" name="email"
-                                    value="<%= data.email %>">
+                                    value="<%= data.email %>" required>
                             </div>
                         </div>
 
@@ -31,11 +31,33 @@
                             </div>
                         </div>
 
+
                         <div class="mb-3 row">
                             <label for="pass" class="col-sm-2 col-form-label">Password</label>
                             <div class="col-sm-10">
-                                <input type="password" class="form-control" id="pass" name="pass"
-                                    value="<%= data.pass %>">
+                                <% if(data.id) { %>
+                                    <a href="/users/password" class="btn btn-success">Change Password</a>
+                                    <% } else { %>
+                                        <input type="password" class="form-control" id="pass" name="pass"
+                                            value="<%= data.pass %>" required>
+                                        <% } %>
+                            </div>
+                        </div>
+
+
+                        <div class="mb-3 row">
+                            <label for="pass" class="col-sm-2 col-form-label">Role</label>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="isadmin" id="admin" value="true"
+                                        <%= data.isadmin ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="admin">Admin</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="isadmin" id="user" value="false"
+                                        <%= !data.isadmin ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="user">User</label>
+                                </div>
                             </div>
                         </div>
 
