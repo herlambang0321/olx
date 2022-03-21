@@ -71,48 +71,73 @@ module.exports = function (db) {
     })
 
     router.get('/add', helpers.isLoggedIn, function (req, res) {
-        res.render('admin/ads/form', {
-            user: req.session.user,
-            data: {}
+        db.query('select * from categories order by id', (err, categories) => {
+            if (err) return res.send(err)
+            db.query('select * from users order by id', (err, users) => {
+                if (err) return res.send(err)
+                res.render('admin/ads/form', {
+                    user: req.session.user,
+                    data: {},
+                    categories: categories.rows,
+                    users: users.rows
+                })
+            })
         })
     })
 
     router.post('/add', function (req, res) {
-        bycrpt.hash(req.body.pass, saltRounds, function (err, hash) {
-            if (err) {
-                console.log(err)
-                req.flash('successMessage', `gagal bikin password`)
-                return res.redirect('/ads')
-            }
-            if (!req.files || Object.keys(req.files).length === 0) {
-                db.query('insert into ads(fullname, email, phone, pass, isadmin) values ($1, $2, $3, $4, $5)', [req.body.fullname, req.body.email, req.body.phone, hash, JSON.parse(req.body.isadmin)], (err) => {
+        if (!req.files || Object.keys(req.files).length === 0) {
+            db.query('insert into ads(title, description, category, seller, price, approved) values ($1, $2, $3, $4, $5, $6)', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved)], (err) => {
+                if (err) {
+                    console.log(err)
+                    req.flash('successMessage', `gagal bikin ads`)
+                    return res.redirect('/ads')
+                }
+                res.redirect('/ads')
+            })
+        } else {
+            const fileNames = []
+            if (req.files.picture.length > 1) {
+                req.files.picture.forEach(item => {
+                    const file = req.files.avatar;
+                    const fileName = `${Date.now()}-${file.name}`
+                    const uploadPath = path.join(__dirname, '..', 'public', 'images', 'ads', fileName);
+                    fileNames.push(fileName)
+                    // Use the mv() method to place the file somewhere on your server
+                    file.mv(uploadPath, function (err) {
+                        if (err)
+                            console.log(err)
+                    });
+                });
+                db.query('insert into ads(title, description, category, seller, price, approved, pictures) values ($1, $2, $3, $4, $5, $6, $7)', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved), fileNames], (err) => {
                     if (err) {
                         console.log(err)
-                        req.flash('successMessage', `gagal bikin user`)
+                        req.flash('successMessage', `gagal bikin ads plus picture`)
                         return res.redirect('/ads')
                     }
                     res.redirect('/ads')
                 })
             } else {
-                const file = req.files.avatar;
+                const file = req.files.picture;
                 const fileName = `${Date.now()}-${file.name}`
-                uploadPath = path.join(__dirname, '..', 'public', 'images', 'avatars', fileName);
+                const uploadPath = path.join(__dirname, '..', 'public', 'images', 'ads', fileName);
 
                 // Use the mv() method to place the file somewhere on your server
                 file.mv(uploadPath, function (err) {
                     if (err)
                         return res.status(500).send(err);
-                    db.query('insert into ads(fullname, email, phone, pass, isadmin, avatar) values ($1, $2, $3, $4, $5, $6)', [req.body.fullname, req.body.email, req.body.phone, hash, JSON.parse(req.body.isadmin), fileName], (err) => {
+                        fileNames.push(fileName)
+                    db.query('insert into ads(title, description, category, seller, price, approved, pictures) values ($1, $2, $3, $4, $5, $6, $7)', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved), fileNames], (err) => {
                         if (err) {
                             console.log(err)
-                            req.flash('successMessage', `gagal bikin user plus avatar`)
+                            req.flash('successMessage', `gagal bikin ads plus picture`)
                             return res.redirect('/ads')
                         }
                         res.redirect('/ads')
                     });
                 });
             }
-        })
+        }
     })
 
     router.get('/delete/:id', helpers.isLoggedIn, function (req, res) {

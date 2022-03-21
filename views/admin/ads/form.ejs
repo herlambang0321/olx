@@ -8,68 +8,94 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3 row">
-                            <label for="fullname" class="col-sm-2 col-form-label">Fullname</label>
+                            <label for="title" class="col-sm-2 col-form-label">Title</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="fullname" name="fullname"
-                                    value="<%= data.fullname %>" required>
+                                <input type="text" class="form-control" id="title" name="title"
+                                    value="<%= data.title %>" required>
                             </div>
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <label for="description" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
-                                <input type="email" class="form-control" id="email" name="email"
-                                    value="<%= data.email %>" required>
+                                <textarea class="form-control" id="description" name="description"
+                                    rows="5"><%= data.description %></textarea>
                             </div>
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                            <label for="category" class="col-sm-2">Category</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phone" name="phone"
-                                    value="<%= data.phone %>">
+                                <select class="form-control" id="category" name="category">
+                                    <option value="">--Pilih Category--</option>
+                                    <% categories.forEach(item=> { %>
+                                        <option value="<%= item.id %>" <%= data.category==item.id ? " selected" : "" %>>
+                                            <%= item.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
                             </div>
                         </div>
 
-
                         <div class="mb-3 row">
-                            <label for="pass" class="col-sm-2 col-form-label">Password</label>
+                            <label for="seller" class="col-sm-2">Seller</label>
                             <div class="col-sm-10">
-                                <% if(data.id) { %>
-                                    <a href="/ads/password" class="btn btn-success">Change Password</a>
-                                    <% } else { %>
-                                        <input type="password" class="form-control" id="pass" name="pass"
-                                            value="<%= data.pass %>" required>
-                                        <% } %>
+                                <select class="form-control" id="seller" name="seller">
+                                    <option value="">--Pilih Seller--</option>
+                                    <% users.forEach(item=> { %>
+                                        <option value="<%= item.id %>" <%= data.seller==item.id ? " selected" : "" %>>
+                                            <%= item.fullname %>
+                                        </option>
+                                        <% }) %>
+                                </select>
                             </div>
                         </div>
 
+                        <div class="mb-3 row">
+                            <label for="price" class="col-sm-2 col-form-label">Price</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="price" name="price"
+                                    value="<%= data.price %>">
+                            </div>
+                        </div>
 
                         <div class="mb-3 row">
-                            <label for="pass" class="col-sm-2 col-form-label">Role</label>
+                            <label for="approved" class="col-sm-2 col-form-label">Approved</label>
                             <div class="col-sm-10">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="isadmin" id="admin" value="true"
-                                        <%= data.isadmin ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="admin">Admin</label>
+                                    <input class="form-check-input" type="radio" name="approved" id="no" value="false"
+                                        <%= !data.approved ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="no">No</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="isadmin" id="user" value="false"
-                                        <%= !data.isadmin ? 'checked' : '' %>>
-                                    <label class="form-check-label" for="user">User</label>
+                                    <input class="form-check-input" type="radio" name="approved" id="yes" value="true"
+                                        <%= data.approved ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="yes">Yes</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3 row">
-                            <label for="avatar" class="col-sm-2 col-form-label">Avatar</label>
+                            <label for="picture1" class="col-sm-2 col-form-label">Picture 1</label>
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" id="avatar" name="avatar">
+                                <input type="file" class="form-control" id="picture1" name="picture">
                             </div>
                         </div>
-                        <% if(data.avatar) { %>
-                            <img src="/images/<%= data.avatar %>" alt="">
-                            <% } %>
+                        <div class="mb-3 row">
+                            <label for="picture2" class="col-sm-2 col-form-label">Picture 2</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="picture2" name="picture">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="picture3" class="col-sm-2 col-form-label">Picture 3</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="picture3" name="picture">
+                            </div>
+                        </div>
+                        <% if(data.pictures.length> 0) { data.pictures.forEach(picture => { %>
+                            <img src="/images/<%= picture %>" alt="">
+                            <% }) } %>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info"><i class="fa-solid fa-floppy-disk"></i></button>
