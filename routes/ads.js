@@ -87,7 +87,7 @@ module.exports = function (db) {
 
     router.post('/add', function (req, res) {
         if (!req.files || Object.keys(req.files).length === 0) {
-            db.query('insert into ads(title, description, category, seller, price, approved) values ($1, $2, $3, $4, $5, $6)', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved)], (err) => {
+            db.query('insert into ads(title, description, category, seller, price, approved, pictures) values ($1, $2, $3, $4, $5, $6, $7)', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved), []], (err) => {
                 if (err) {
                     console.log(err)
                     req.flash('successMessage', `gagal bikin ads`)
@@ -98,8 +98,7 @@ module.exports = function (db) {
         } else {
             const fileNames = []
             if (req.files.picture.length > 1) {
-                req.files.picture.forEach(item => {
-                    const file = req.files.avatar;
+                req.files.picture.forEach(file => {
                     const fileName = `${Date.now()}-${file.name}`
                     const uploadPath = path.join(__dirname, '..', 'public', 'images', 'ads', fileName);
                     fileNames.push(fileName)
@@ -169,8 +168,9 @@ module.exports = function (db) {
 
     router.post('/edit/:id', helpers.isLoggedIn, function (req, res) {
         const id = Number(req.params.id)
+        let fileNames = req.body.pictures ? typeof req.body.pictures == 'string' ? [req.body.pictures] : [...req.body.pictures] : []
         if (!req.files || Object.keys(req.files).length === 0) {
-            db.query('update ads set title = $1, description = $2, category = $3, seller = $4, price = $5, approved = $6 where id = $7', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved), id], (err) => {
+            db.query('update ads set title = $1, description = $2, category = $3, seller = $4, price = $5, approved = $6, pictures = $7 where id = $8', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved), fileNames, id], (err) => {
                 if (err) {
                     console.log(err)
                     req.flash('successMessage', `gagal bikin ads`)
@@ -179,10 +179,8 @@ module.exports = function (db) {
                 res.redirect('/ads')
             })
         } else {
-            const fileNames = []
             if (req.files.picture.length > 1) {
-                req.files.picture.forEach(item => {
-                    const file = req.files.avatar;
+                req.files.picture.forEach(file => {
                     const fileName = `${Date.now()}-${file.name}`
                     const uploadPath = path.join(__dirname, '..', 'public', 'images', 'ads', fileName);
                     fileNames.push(fileName)

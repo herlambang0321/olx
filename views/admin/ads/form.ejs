@@ -29,7 +29,7 @@
                                 <select class="form-control" id="category" name="category">
                                     <option value="">--Pilih Category--</option>
                                     <% categories.forEach(item=> { %>
-                                        <option value="<%= item.id %>" <%= data.category==item.id ? " selected" : "" %>>
+                                        <option value="<%= item.id %>" <%=data.category==item.id ? " selected" : "" %>>
                                             <%= item.name %>
                                         </option>
                                         <% }) %>
@@ -43,7 +43,7 @@
                                 <select class="form-control" id="seller" name="seller">
                                     <option value="">--Pilih Seller--</option>
                                     <% users.forEach(item=> { %>
-                                        <option value="<%= item.id %>" <%= data.seller==item.id ? " selected" : "" %>>
+                                        <option value="<%= item.id %>" <%=data.seller==item.id ? " selected" : "" %>>
                                             <%= item.fullname %>
                                         </option>
                                         <% }) %>
@@ -64,38 +64,49 @@
                             <div class="col-sm-10">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="approved" id="no" value="false"
-                                        <%= !data.approved ? 'checked' : '' %>>
+                                        <%=!data.approved ? 'checked' : '' %>>
                                     <label class="form-check-label" for="no">No</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="approved" id="yes" value="true"
-                                        <%= data.approved ? 'checked' : '' %>>
+                                        <%=data.approved ? 'checked' : '' %>>
                                     <label class="form-check-label" for="yes">Yes</label>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-3 row">
-                            <label for="picture1" class="col-sm-2 col-form-label">Picture 1</label>
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control" id="picture1" name="picture">
+                        <% if(data.pictures?.length> 0) { data.pictures.forEach((picture, index) => { %>
+                            <div class="mb-3 row">
+                                <input type="hidden" name="pictures" value="<%= picture %>">
+                                <label for="" class="col-sm-2 col-form-label">Picture <span class="count">
+                                        <%= index + 1 %>
+                                    </span></label>
+                                <div class="col-sm-9">
+                                    <img src="/images/ads/<%= picture %>" alt="" width="300" height="auto">
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger" type="button" onclick="removeUpload(this)"><i
+                                            class="fa-solid fa-minus"></i></button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="picture2" class="col-sm-2 col-form-label">Picture 2</label>
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control" id="picture2" name="picture">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="picture3" class="col-sm-2 col-form-label">Picture 3</label>
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control" id="picture3" name="picture">
-                            </div>
-                        </div>
-                        <% if(data.pictures.length > 0) { data.pictures.forEach(picture => { %>
-                            <img src="/images/ads/<%= picture %>" alt="" width="100" height="auto">
                             <% }) } %>
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-2 col-form-label">Picture <span class="count">
+                                            <%= data.pictures ? data.pictures.length + 1 : 1 %>
+                                        </span></label>
+                                    <div class="col-sm-10">
+                                        <input type="file" class="form-control" id="" name="picture">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row" id="div-add-btn">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-10">
+                                        <button class="btn btn-success" type="button" onclick="addUpload()"><i
+                                                class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                </div>
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-info"><i class="fa-solid fa-floppy-disk"></i></button>
@@ -104,5 +115,36 @@
                 </form>
             </div>
         </div>
+
+        <script>
+            var count = Number("<%= data.pictures ? data.pictures.length + 1 : 1 %>");
+            function addUpload() {
+                count++
+                let html = `
+                        <div class="mb-3 row">
+                            <label for="" class="col-sm-2 col-form-label">Picture <span class="count">${count}</span></label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" id="" name="picture">
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-danger" type="button" onclick="removeUpload(this)"><i class="fa-solid fa-minus"></i></button>
+                            </div>
+                        </div>
+                `
+                var addBtn = document.getElementById("div-add-btn");
+                addBtn.insertAdjacentHTML("beforebegin", html);
+            }
+
+            function removeUpload(removeBtn) {
+                removeBtn.parentNode.parentNode.remove()
+                count--
+
+                const counter = document.getElementsByClassName('count')
+                for (let index = 0; index < counter.length; index++) {
+                    counter[index].innerHTML = index + 1
+                }
+            }
+
+        </script>
 
         <%- include('../partials/footer') %>

@@ -65,7 +65,7 @@
                 <th><a
                     href="<%= url.replace(`sortBy=${query.sortBy}`, `sortBy=fullname`).replace(`sortMode=${query.sortMode}`, `sortMode=${query.sortMode == 'asc' ? 'desc' : 'asc'}`)  %>"><i
                       class="fa-solid <%= query.sortBy == 'fullname' ? query.sortMode == 'asc' ? 'fa-sort-up' : 'fa-sort-down' : 'fa-sort' %>"></i></a>
-                  Name</th>
+                  Fullname</th>
                 <th>Actions</th>
               </tr>
             </thead>
