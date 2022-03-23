@@ -3,7 +3,7 @@
 
 <head>
   <title>
-    <%= title %>
+    OLX
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='/stylesheets/carousel.css' />
@@ -76,7 +76,6 @@
       align-items: center;
       gap: 10px;
     }
-
   </style>
 </head>
 
@@ -97,8 +96,10 @@
         </select>
         <input type="text">
       </form>
-      <a href="<%= user ? '/profile' : '/login' %>"><%= user ? user.fullname : 'Sign in' %></a>
-      <a class="btn" href="">Jual</a>
+      <a href="<%= user ? '/profile' : '/login' %>">
+        <%= user ? user.fullname : 'Sign in' %>
+      </a>
+      <a class="btn" href="/sell">Jual</a>
     </div>
     <div class="carousel">
       <div class="slideshow-container">
@@ -134,20 +135,13 @@
       </div>
     </div>
     <div class="ads">
-      <div class="item-ads">
-        <img src="/images/img_innova.jpeg" alt="">
-        <h2>Rp. 120.000.000</h2>
-        <p>Jual Mobil</p>
-      </div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
-      <div class="item-ads"></div>
+      <% data.forEach(item=> { %>
+        <div class="item-ads">
+          <img src="/images/ads/<%= item.pictures[0] %>" alt="">
+          <h2><%= item.price %></h2>
+          <p><%= item.title %></p>
+        </div>
+        <% }) %>
     </div>
   </div>
 

@@ -10,6 +10,7 @@ const saltRounds = 10;
 module.exports = function (db) {
 
     router.get('/', helpers.isLoggedIn, function (req, res) {
+        
         const url = req.url == '/' ? '/ads?page=1&sortBy=id&sortMode=asc' : req.url.replace('/', '/ads')
 
         const params = []
@@ -85,7 +86,7 @@ module.exports = function (db) {
         })
     })
 
-    router.post('/add', function (req, res) {
+    router.post('/add', helpers.isLoggedIn, function (req, res) {
         if (!req.files || Object.keys(req.files).length === 0) {
             db.query('insert into ads(title, description, category, seller, price, approved, pictures) values ($1, $2, $3, $4, $5, $6, $7)', [req.body.title, req.body.description, Number(req.body.category), Number(req.body.seller), Number(req.body.price), JSON.parse(req.body.approved), []], (err) => {
                 if (err) {
