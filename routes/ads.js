@@ -20,7 +20,7 @@ module.exports = function (db) {
         }
 
         if (req.query.description) {
-            params.push(`email ilike '%${req.query.email}%'`)
+            params.push(`description ilike '%${req.query.description}%'`)
         }
 
         if (req.query.category) {

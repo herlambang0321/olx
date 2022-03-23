@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt');
 var path = require('path')
-const helpers = require('../helpers/util')
+const helpers = require('../helpers/util');
+const { query } = require('express');
 const saltRounds = 10;
 
 /* GET home page. */
@@ -10,17 +11,12 @@ module.exports = function (db) {
 
   router.get('/', function (req, res, next) {
     const url = req.url == '/' ? '/ads?page=1&sortBy=id&sortMode=asc' : req.url.replace('/', '/ads')
-
     const params = []
 
     params.push('approved is true')
 
-    if (req.query.title) {
-      params.push(`title ilike '%${req.query.title}%'`)
-    }
-
-    if (req.query.description) {
-      params.push(`email ilike '%${req.query.email}%'`)
+    if (req.query.keyword) {
+      params.push(`(title ilike '%${req.query.keyword}%' or description ilike '%${req.query.keyword}%')`)
     }
 
     if (req.query.category) {
