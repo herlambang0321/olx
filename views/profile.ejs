@@ -4,7 +4,10 @@
 <head>
     <title>Belajar HTML</title>
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link href="/fontawesome/css/all.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 </head>
 
 <body>
@@ -57,7 +60,7 @@
                         </div>
                     </div>
                     <% if(data.avatar) { %>
-                        <img src="/images/avatars/<%= data.avatar %>" alt="">
+                        <img src="/images/avatars/<%= data.avatar %>" alt="" width="300" height="auto">
                         <% } %>
                 </div>
                 <div class="card-footer">
@@ -65,8 +68,51 @@
                     <a href="/" class="btn btn-warning"><i class="fa-solid fa-rotate-left"></i></a>
                 </div>
             </form>
+            <div style="margin-top: 50px; padding: 20px;">
+                <table id="example" class="display" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Approved</th>
+                            <th>Picture</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% ads.forEach((item)=> { %>
+                            <tr>
+                                <td>
+                                    <%= item.title %>
+                                </td>
+                                <td>
+                                    <%= item.price %>
+                                </td>
+                                <td>
+                                    <%= item.approved ? 'yes' : 'no' %>
+                                </td>
+                                <td>
+                                    <img src="/images/ads/<%= item.pictures[0] %>" alt="" width="300" height="auto">
+                                </td>
+                                <td>
+                                    <a href="#<%= item.id %>" class="btn btn-success"><i
+                                            class="fa-solid fa-pencil"></i></a>
+                                    <a href="#<%= item.id %>" class="btn btn-danger"><i
+                                            class="fa-solid fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
 </body>
 
 </html>

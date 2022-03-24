@@ -135,9 +135,13 @@ module.exports = function (db) {
   router.get('/profile', helpers.isLoggedIn, function (req, res) {
     db.query('select * from users where id = $1', [req.session.user.id], (err, item) => {
       if (err) return res.send(err)
-      res.render('profile', {
-        user: req.session.user,
-        data: item.rows[0]
+      db.query('select * from ads where seller = $1', [req.session.user.id], (err, ads) => {
+        if (err) return res.send(err)
+        res.render('profile', {
+          user: req.session.user,
+          data: item.rows[0],
+          ads: ads.rows
+        })
       })
     })
   })
@@ -152,7 +156,7 @@ module.exports = function (db) {
           return res.redirect('/profile')
         }
         res.redirect('/profile')
-      })
+      });
     } else {
       const file = req.files.avatar;
       const fileName = `${Date.now()}-${file.name}`
