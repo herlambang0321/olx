@@ -7,6 +7,7 @@
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='/stylesheets/carousel.css' />
+  <link href="/fontawesome/css/all.css" rel="stylesheet">
   <style>
     .container {
       margin: 0;
@@ -97,7 +98,7 @@
               <% }) %>
         </select>
         <input type="text" name="keyword" value="<%= query.keyword %>">
-        <button class="btn btn-success" type="submit">Enter</button>
+        <button type="submit" class="btn"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
       <a href="<%= user ? '/profile' : '/login' %>"><%= user ? user.fullname : 'Sign in' %></a>
       <a class="btn" href="/sell">Jual</a>

@@ -132,6 +132,48 @@ module.exports = function (db) {
     }
   })
 
+  router.get('/profile', helpers.isLoggedIn, function (req, res) {
+    db.query('select * from users where id = $1', [req.session.user.id], (err, item) => {
+      if (err) return res.send(err)
+      res.render('profile', {
+        user: req.session.user,
+        data: item.rows[0]
+      })
+    })
+  })
+
+  router.post('/profile', helpers.isLoggedIn, function (req, res) {
+    const id = req.session.user.id
+    if (!req.files || Object.keys(req.files).length === 0) {
+      db.query('update users set fullname = $1, email = $2, phone = $3 where id = $4', [req.body.fullname, req.body.email, req.body.phone, id], (err) => {
+        if (err) {
+          console.log(err)
+          req.flash('successMessage', `gagal bikin user`)
+          return res.redirect('/profile')
+        }
+        res.redirect('/profile')
+      })
+    } else {
+      const file = req.files.avatar;
+      const fileName = `${Date.now()}-${file.name}`
+      uploadPath = path.join(__dirname, '..', 'public', 'images', 'avatars', fileName);
+
+      // Use the mv() method to place the file somewhere on your server
+      file.mv(uploadPath, function (err) {
+        if (err)
+          return res.status(500).send(err);
+        db.query('update users set fullname = $1, email = $2, phone = $3, avatar = $4  where id = $5', [req.body.fullname, req.body.email, req.body.phone, fileName, id], (err) => {
+          if (err) {
+            console.log(err)
+            req.flash('successMessage', `gagal bikin user plus avatar`)
+            return res.redirect('/profile')
+          }
+          res.redirect('/profile')
+        });
+      });
+    }
+  })
+
   router.get('/login', function (req, res) {
     res.render('login', { loginMessage: req.flash('loginMessage') });
   })
