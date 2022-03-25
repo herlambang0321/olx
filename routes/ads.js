@@ -222,5 +222,14 @@ module.exports = function (db) {
         }
     })
 
+    router.get('/data/:id', function (req, res) {
+        const id = Number(req.params.id)
+        db.query('select * from ads where id = $1', [id], (err, data) => {
+            if (err) return res.json({err: err})
+            if (data.rows.length == 0) return res.json({err: 'data tidak ditemukan'})
+            res.json(data.rows[0])
+        })
+    })
+
     return router;
 }
