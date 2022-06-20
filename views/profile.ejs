@@ -94,33 +94,8 @@
                             <th>Price</th>
                             <th>Approved</th>
                             <th>Picture</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <% ads.forEach((item)=> { %>
-                            <tr>
-                                <td>
-                                    <%= item.title %>
-                                </td>
-                                <td>
-                                    <%= item.price %>
-                                </td>
-                                <td>
-                                    <%= item.approved ? 'yes' : 'no' %>
-                                </td>
-                                <td>
-                                    <img src="/images/ads/<%= item.pictures[0] %>" alt="" width="300" height="auto">
-                                </td>
-                                <td>
-                                    <button type="button" dataid="<%= item.id %>" class="btn btn-success btn-edit"><i
-                                            class="fa-solid fa-pencil"></i></button>
-                                    <button type="button" dataid="<%= item.id %>" class="btn btn-danger "><i
-                                            class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <% }) %>
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -128,7 +103,8 @@
 
     <div class="modal-body">
         <div class="card my-modal">
-            <form>
+            <form id="form-edit">
+                <input type="hidden" id="id" value="">
                 <div class="card-header">
                     <h1>Form Edit</h1>
                 </div>
@@ -162,11 +138,22 @@
 
     <script>
         $(document).ready(function () {
-            $('#example').DataTable();
+            $('#example').DataTable({
+                "lengthMenu": [[1, 2, 3, -1], [1, 2, 3, 'All']],
+                "processing": true,
+                "serverSide": true,
+                "ajax": "/ads/data",
+                "columns": [
+                    { "data": "title" },
+                    { "data": "price" },
+                    { "data": "approved" }
+                ]
+            });
 
             $('.btn-edit').click(function () {
                 const id = $(this).attr('dataid')
                 $.get(`/ads/data/${id}`, function (data) {
+                    $('#id').val(data.id)
                     $('#title').val(data.title)
                     $('#description').val(data.description)
                     $('#price').val(data.price)
@@ -177,6 +164,19 @@
 
             $('.tombol-close').click(function () {
                 $('.modal-body').css('display', 'none')
+            })
+
+            $('#form-edit').submit(function (e) {
+                e.preventDefault()
+                const id = $('#id').val()
+                const title = $('#title').val()
+                const description = $('#description').val()
+                const price = $('#price').val()
+
+                $.post(`/ads/data/${id}`, { title, description, price }, function (data) {
+                    console.log(data)
+                    $('.modal-body').css('display', 'none')
+                })
             })
         });
     </script>
