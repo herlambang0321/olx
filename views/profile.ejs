@@ -94,6 +94,7 @@
                             <th>Price</th>
                             <th>Approved</th>
                             <th>Picture</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                 </table>
@@ -144,9 +145,16 @@
                 "serverSide": true,
                 "ajax": "/ads/data",
                 "columns": [
-                    { "data": "title" },
-                    { "data": "price" },
-                    { "data": "approved" }
+                    { data: "title" },
+                    { data: "price" },
+                    { data: "approved" },
+                    { data: "pictures" },
+                    {
+                        data: "id",
+                        render: function (data, type) {
+                            return '<button type="button" class="btn btn-success btn-edit"><i class="fa-solid fa-pencil"></i></button>'
+                        }
+                    }
                 ]
             });
 
