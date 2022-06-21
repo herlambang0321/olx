@@ -139,7 +139,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#example').DataTable({
+            const table = $('#example').DataTable({
                 "lengthMenu": [[1, 2, 3, -1], [1, 2, 3, 'All']],
                 "processing": true,
                 "serverSide": true,
@@ -187,7 +187,7 @@
                 const price = $('#price').val()
 
                 $.post(`/ads/data/${id}`, { title, description, price }, function (data) {
-                    console.log(data)
+                    table.ajax.reload();
                     $('.modal-body').css('display', 'none')
                 })
             })
