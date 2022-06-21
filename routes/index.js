@@ -86,7 +86,7 @@ module.exports = function (db) {
           req.flash('successMessage', `gagal bikin ads`)
           return res.redirect('/')
         }
-        res.redirect('/')
+        res.redirect('/profile')
       })
     } else {
       const fileNames = []
@@ -107,7 +107,7 @@ module.exports = function (db) {
             req.flash('successMessage', `gagal bikin ads plus picture`)
             return res.redirect('/')
           }
-          res.redirect('/')
+          res.redirect('/profile')
         })
       } else {
         const file = req.files.picture;
@@ -125,7 +125,7 @@ module.exports = function (db) {
               req.flash('successMessage', `gagal bikin ads plus picture`)
               return res.redirect('/')
             }
-            res.redirect('/')
+            res.redirect('/profile')
           });
         });
       }
