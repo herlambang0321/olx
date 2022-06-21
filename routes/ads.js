@@ -254,7 +254,10 @@ module.exports = function (db) {
             const total = data.rows[0].total
             const offset = req.query.start
             const limit = req.query.length
-            db.query(`select * from ads${params.length > 0 ? ` where ${params.join(' or ')}` : ''} limit ${limit} offset ${offset}`, (err, data) => {
+            const sortBy = req.query.columns[req.query.order[0].column].data
+            const sortMode = req.query.order[0].dir
+
+            db.query(`select * from ads${params.length > 0 ? ` where ${params.join(' or ')}` : ''} order by ${sortBy} ${sortMode} limit ${limit} offset ${offset}`, (err, data) => {
                 if (err) return res.json({ err: err })
                 res.json({
                     "draw": Number(req.query.draw),
