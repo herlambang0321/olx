@@ -157,13 +157,13 @@
                     {
                         data: "id",
                         render: function (data, type) {
-                            return `<button type="button" class="btn btn-success btn-edit"><i class="fa-solid fa-pencil"></i></button>`
+                            return `<button type="button" dataid="${data}" class="btn btn-success btn-edit"><i class="fa-solid fa-pencil"></i></button>`
                         }
                     }
                 ]
             });
 
-            $('.btn-edit').click(function () {
+            $('#example').on('click', '.btn-edit', function () {
                 const id = $(this).attr('dataid')
                 $.get(`/ads/data/${id}`, function (data) {
                     $('#id').val(data.id)
