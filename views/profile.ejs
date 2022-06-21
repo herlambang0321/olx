@@ -150,12 +150,14 @@
                     { data: "approved" },
                     {
                         data: "pictures",
+                        orderable: false,
                         render: function (data, type) {
                             return `<img src="/images/ads/${data[0]}" alt="gambar produk" width="100" />`
                         }
                     },
                     {
                         data: "id",
+                        orderable: false,
                         render: function (data, type) {
                             return `<button type="button" dataid="${data}" class="btn btn-success btn-edit"><i class="fa-solid fa-pencil"></i></button>`
                         }
