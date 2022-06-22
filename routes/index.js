@@ -10,6 +10,7 @@ const saltRounds = 10;
 module.exports = function (db) {
 
   router.get('/', function (req, res, next) {
+    
     const url = req.url == '/' ? '/ads?page=1&sortBy=id&sortMode=asc' : req.url.replace('/', '/ads')
     const params = []
 
