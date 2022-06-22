@@ -10,7 +10,7 @@ const saltRounds = 10;
 module.exports = function (db) {
 
   router.get('/', function (req, res, next) {
-    
+
     const url = req.url == '/' ? '/ads?page=1&sortBy=id&sortMode=asc' : req.url.replace('/', '/ads')
     const params = []
 
@@ -66,6 +66,15 @@ module.exports = function (db) {
         })
       })
     })
+  });
+
+  router.get('/detail/:id', function (req, res) {
+    const id = Number(req.params.id)
+    db.query('select * from ads where id = $1', [id], (err, data) => {
+      if (err) return res.json({ err: err })
+      if (data.rows.length == 0) return res.json({ err: 'data tidak ditemukan' })
+      res.render('detail', {item: data.rows[0]})
+    });
   });
 
   router.get('/sell', helpers.isLoggedIn, function (req, res) {
