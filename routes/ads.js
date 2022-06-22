@@ -146,7 +146,7 @@ module.exports = function (db) {
             if (err) return res.send(err)
             req.flash('successMessage', `ID : ${id} Berhasil Dihapus`)
             res.redirect('/ads')
-        })
+        });
     })
 
     router.get('/edit/:id', helpers.isLoggedIn, function (req, res) {
@@ -268,6 +268,14 @@ module.exports = function (db) {
             });
 
         })
+    })
+
+    router.delete('/data/:id', helpers.isLoggedIn, function (req, res) {
+        const id = Number(req.params.id)
+        db.query('delete from ads where id = $1 returning *', [id], (err, data) => {
+            if (err) return res.json({ err: err })
+            res.json(data)
+        });
     })
 
     return router;
