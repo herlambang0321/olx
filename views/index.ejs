@@ -146,7 +146,7 @@
           <div class="item-ads">
             <img src="/images/ads/<%= item.pictures[0] %>" alt="">
             <h2>
-              <%= item.price %>
+              <%= formatter.format(item.price) %>
             </h2>
             <p>
               <%= item.title %>

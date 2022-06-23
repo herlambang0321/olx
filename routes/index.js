@@ -60,7 +60,8 @@ module.exports = function (db) {
               user: req.session.user,
               categories: categories.rows,
               users: users.rows,
-              successMessage: req.flash('successMessage')
+              successMessage: req.flash('successMessage'),
+              formatter: helpers.formatter
             })
           })
         })
@@ -70,10 +71,14 @@ module.exports = function (db) {
 
   router.get('/detail/:id', function (req, res) {
     const id = Number(req.params.id)
-    db.query('select * from ads where id = $1', [id], (err, data) => {
+    db.query('select * from ads left join users on ads.seller = users.id where ads.id = $1', [id], (err, data) => {
       if (err) return res.json({ err: err })
       if (data.rows.length == 0) return res.json({ err: 'data tidak ditemukan' })
-      res.render('detail', {item: data.rows[0]})
+      console.log(data.rows[0])
+      res.render('detail', {
+        item: data.rows[0],
+        formatter: helpers.formatter
+      })
     });
   });
 

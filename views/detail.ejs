@@ -12,12 +12,13 @@
         .container {
             margin: 0;
             padding: 0;
-            background: rgb(93, 192, 224);
         }
 
         .carousel {
             margin-top: 20px;
             margin-bottom: 50px;
+            background: rgb(93, 192, 224);
+            border-radius: 10px;
         }
 
         .header {
@@ -26,6 +27,17 @@
             font-style: italic;
             font-family: "Times New Roman", Times, serif;
             text-decoration: underline;
+        }
+
+        .box {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+        }
+
+        .description {
+            min-height: 400px;
         }
 
         .numbertext {
@@ -73,6 +85,21 @@
                         <% }) %>
             </div>
         </div>
+        <h2 style="margin-left: 20px;">
+            <%= formatter.format(item.price) %>
+        </h2>
+        <div class="box description">
+            <%= item.description %>
+        </div>
+        <fieldset class="box">
+            <legend>Contact Person</legend>
+            <h2>
+                <%= item.fullname%>
+            </h2>
+            <p>
+                <%= item.phone %>
+            </p>
+        </fieldset>
     </div>
 
     <script src="/javascripts/carousel.js"></script>
