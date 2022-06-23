@@ -9,11 +9,73 @@
     <link rel='stylesheet' href='/stylesheets/carousel.css' />
     <link href="/fontawesome/css/all.css" rel="stylesheet">
     <style>
+        .container {
+            margin: 0;
+            padding: 0;
+            background: rgb(93, 192, 224);
+        }
+
+        .carousel {
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        .header {
+            text-align: center;
+            text-shadow: 2px 2px red;
+            font-style: italic;
+            font-family: "Times New Roman", Times, serif;
+            text-decoration: underline;
+        }
+
+        .numbertext {
+            color: rgb(255, 0, 0);
+            font-size: medium;
+        }
+
+        .text {
+            color: rgb(255, 0, 0);
+            font-size: medium;
+        }
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <%= item.title %>
+            </h1>
+        </div>
+        <div class="carousel">
+            <div class="slideshow-container">
 
+                <% item.pictures.forEach((picture, index)=> { %>
+                    <div class="mySlides fade">
+                        <div class="numbertext">
+                            <%= `${index + 1} / ${item.pictures.length}` %>
+                        </div>
+                        <img src="/images/ads/<%= picture %>" style="width:100%">
+                        <div class="text">Gambar ke-<%= index + 1 %>
+                        </div>
+                    </div>
+                    <% }) %>
+
+                        <a class="prev" style="color: black;" onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="next" style="color: black;" onclick="plusSlides(1)">&#10095;</a>
+
+            </div>
+            <br>
+
+            <div style="text-align:center">
+                <% item.pictures.forEach((picture, index)=> { %>
+                    <%- `<span class="dot" onclick="currentSlide(${index + 1})"></span>` %>
+                        <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/carousel.js"></script>
 </body>
 
 </html>
