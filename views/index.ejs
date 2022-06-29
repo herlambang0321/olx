@@ -8,6 +8,9 @@
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link rel='stylesheet' href='/stylesheets/carousel.css' />
   <link href="/fontawesome/css/all.css" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
   <style>
     .container {
       margin: 0;
@@ -158,6 +161,41 @@
   </div>
 
   <script src="/javascripts/carousel.js"></script>
+
+  <script>
+    var page = 1;
+    $(window).scroll(function () {
+      if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        page++
+        $.ajax({
+          url: `/`,
+          method: "get",
+          data: { page, format: 'json' },
+          dataType: "json"
+        }).done(function (data) {
+          let html = ''
+          data.forEach(item => {
+            html += `
+            <a href="/detail/${item.id}" style="text-decoration: none; color: transparent;">
+              <div class="item-ads">
+                <img src="/images/ads/${item.pictures[0]}" alt="">
+                <h2>
+                  ${item.price}
+                </h2>
+                <p>
+                  ${item.title}
+                </p>
+              </div>
+            </a>
+            `
+          })
+          $('.ads').append(html)
+        }).fail(function (jqXHR, textStatus) {
+          alert("Request failed: " + textStatus);
+        });
+      }
+    });
+  </script>
 
 </body>
 

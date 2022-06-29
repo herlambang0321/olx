@@ -25,7 +25,7 @@ module.exports = function (db) {
     }
 
     const page = req.query.page || 1
-    const limit = 10
+    const limit = 8
     const offset = (page - 1) * limit
     let sql = 'select count(*) as total from ads';
     if (params.length > 0) {
@@ -51,18 +51,22 @@ module.exports = function (db) {
           if (err) return res.send(err)
           db.query('select * from users order by id', (err, users) => {
             if (err) return res.send(err)
-            res.render('index', {
-              data: data.rows,
-              page,
-              pages,
-              query: req.query,
-              url,
-              user: req.session.user,
-              categories: categories.rows,
-              users: users.rows,
-              successMessage: req.flash('successMessage'),
-              formatter: helpers.formatter
-            })
+            if (req.query.format == 'json') {
+              res.json(data.rows)
+            } else {
+              res.render('index', {
+                data: data.rows,
+                page,
+                pages,
+                query: req.query,
+                url,
+                user: req.session.user,
+                categories: categories.rows,
+                users: users.rows,
+                successMessage: req.flash('successMessage'),
+                formatter: helpers.formatter
+              })
+            }
           })
         })
       })
@@ -248,6 +252,22 @@ module.exports = function (db) {
     req.session.destroy(function (err) {
       res.redirect('/')
     })
+  })
+
+  router.get('/seed', function (req, res) {
+    const values = [
+      'example ads',
+      'example description',
+      2,
+      5,
+      1200000,
+      ['1655891847327-gambar-rumah-minimalis-1.jpg', '1648005088625-Featured_Motor-Yamaha-Terbaru.jpg'],
+      true
+    ]
+    db.query('insert into ads (title, description, category, seller, price, pictures, approved) values ($1, $2, $3, $4, $5, $6, $7)',
+      values, function () {
+        res.send('success')
+      })
   })
 
   return router;
