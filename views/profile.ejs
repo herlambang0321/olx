@@ -206,10 +206,10 @@
 
             $('#form-edit').submit(function (e) {
                 e.preventDefault()
-                const id = $('#id').val()
-                const title = $('#title').val()
-                const description = $('#description').val()
-                const price = $('#price').val()
+                // const id = $('#id').val()
+                // const title = $('#title').val()
+                // const description = $('#description').val()
+                // const price = $('#price').val()
 
                 $.post(`/ads/data/${id}`, { title, description, price }, function (data) {
                     table.ajax.reload();

@@ -3,7 +3,6 @@ var router = express.Router();
 var bcrypt = require('bcrypt');
 var path = require('path')
 const helpers = require('../helpers/util');
-const { query } = require('express');
 const saltRounds = 10;
 
 /* GET home page. */
