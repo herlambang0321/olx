@@ -165,5 +165,16 @@ module.exports = function (db) {
         }
     })
 
+    router.get('/password', helpers.isLoggedIn, function (req, res) {
+        db.query('select * from users where id = $1', [req.session.user.id], (err, item) => {
+            if (err) return res.send(err)
+            res.render('password', {
+                user: req.session.user,
+                data: item.rows[0],
+                path: req.originalUrl
+            })
+        })
+    })
+
     return router;
 }

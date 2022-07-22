@@ -37,7 +37,7 @@
                         <h1>Your Profile</h1>
                         <a href="/logout" class="btn btn-danger">Logout</a>
                     </div>
-                    
+
                 </div>
                 <div class="card-body">
                     <div class="mb-3 row">
@@ -185,7 +185,9 @@
             })
 
             $('#example').on('click', '.btn-delete', function () {
-                const id = $(this).attr('dataid')
+                if (confirm('are you sure the data wish be the deleted?')) {
+                    const id = $(this).attr('dataid')
+                }
 
                 $.ajax({
                     url: `/ads/data/${id}`,
@@ -206,10 +208,10 @@
 
             $('#form-edit').submit(function (e) {
                 e.preventDefault()
-                // const id = $('#id').val()
-                // const title = $('#title').val()
-                // const description = $('#description').val()
-                // const price = $('#price').val()
+                const id = $('#id').val()
+                const title = $('#title').val()
+                const description = $('#description').val()
+                const price = $('#price').val()
 
                 $.post(`/ads/data/${id}`, { title, description, price }, function (data) {
                     table.ajax.reload();
