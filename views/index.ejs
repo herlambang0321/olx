@@ -33,26 +33,6 @@
       z-index: 1;
     }
 
-    .footer {
-      margin-top: 100px;
-      padding-top: 50px;
-      height: 200px;
-      background-color: greenyellow !important;
-      text-align: center;
-    }
-
-    p.copy-right {
-      margin-top: 30px;
-    }
-
-    .social-icon {
-      margin: 10px 10px 10px 10px;
-    }
-
-    .social-icon {
-      margin: 10px 10px 10px 10px;
-    }
-
     .carousel {
       margin-top: 100px;
       margin-bottom: 50px;
@@ -108,6 +88,107 @@
       background-repeat: no-repeat;
       background-size: cover;
     }
+
+    .footer {
+      height: 200px;
+      background-color: greenyellow !important;
+      text-align: center;
+      background: #0e182c;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .icons {
+      margin-bottom: auto;
+      display: flex;
+    }
+
+    .icons li {
+      position: relative;
+      margin-left: 10px;
+      height: 70px;
+      width: 70px;
+      overflow: hidden;
+      background: #071122;
+      border-radius: 50%;
+      text-align: center;
+      box-shadow: inset -1px -1px 2px white, inset 1px 1px 2px white;
+    }
+
+    .icons li a i {
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30px;
+    }
+
+    .icons li::before {
+      content: '';
+      position: absolute;
+      background-color: white;
+      height: 200%;
+      width: 200%;
+      bottom: 150%;
+      left: -50%;
+      transform: rotate(50deg);
+    }
+
+    .icons li:hover::before {
+      animation: slide 1s linear;
+      animation-fill-mode: forwards;
+    }
+
+    .icons li:hover .fa-facebook-f {
+      color: #3b5998;
+    }
+
+    .icons li:hover .fa-twitter {
+      color: #00acee;
+    }
+
+    .icons li:hover .fa-linkedin-in {
+      color: #0e76a8;
+    }
+
+    .icons li:hover .fa-google-plus-g {
+      color: #db4a39;
+    }
+
+    .icons li:hover .fa-github {
+      color: #333;
+    }
+
+    @keyframes slide {
+      0% {}
+
+      25% {
+        bottom: 0%;
+      }
+
+      75% {
+        bottom: 80%;
+
+        transform-origin: top left;
+        -webkit-transform-origin: top left;
+        -ms-transform-origin: top left;
+
+        transform: rotate(400deg) translateX(-100%) translateY(-100%);
+        -webkit-transform: rotate(-400deg) translateX(-100%) translateY(100%);
+        -ms-transform: rotate(400deg) translateX(-100%) translateY(-100%);
+      }
+
+      100% {
+        bottom: -50%;
+      }
+    }
+
+    #logos {
+      animation: slide 5s ease forwards;
+    }
   </style>
 </head>
 
@@ -115,7 +196,8 @@
   <div class="container">
     <div class="header">
       <a href="/">
-        <svg width="48px" height="48px" viewBox="0 0 1024 1024" data-aut-id="icon" class="" fill-rule="evenodd">
+        <svg id="logos" width="48px" height="48px" viewBox="0 0 1024 1024" data-aut-id="icon" class=""
+          fill-rule="evenodd">
           <path class="rui-4K4Y7"
             d="M661.333 256v512h-128v-512h128zM277.333 298.667c117.824 0 213.333 95.531 213.333 213.333s-95.509 213.333-213.333 213.333c-117.824 0-213.333-95.531-213.333-213.333s95.509-213.333 213.333-213.333zM794.496 384l37.504 37.504 37.504-37.504h90.496v90.496l-37.504 37.504 37.504 37.504v90.496h-90.496l-37.504-37.504-37.504 37.504h-90.496v-90.496l37.504-37.504-37.504-37.504v-90.496h90.496zM277.333 426.667c-47.061 0-85.333 38.293-85.333 85.333s38.272 85.333 85.333 85.333c47.061 0 85.333-38.293 85.333-85.333s-38.272-85.333-85.333-85.333z">
           </path>
@@ -191,15 +273,20 @@
       <section id="card-footer">
         <div class="footer-container container-fluid">
           <p class="copy-right text-center text-md-center">
-            © 2022 Copyright: By Herlambang Gunawan
+            © 2022 Copyright By Herlambang Gunawan
           </p>
           <p>
             Follow US
           </p>
-          <i class="social-icon fa-brands fa-facebook"></i>
-          <i class="social-icon fa-brands fa-twitter"></i>
-          <i class="social-icon fa-brands fa-instagram"></i>
-          <i class="social-icon fa-brands fa-youtube"></i>
+
+          <div class="icons">
+            <li><a><i class="fab fa-facebook-f"></i></a></li>
+            <li><a><i class="fab fa-twitter"></i></a></li>
+            <li><a><i class="fab fa-linkedin-in"></i></a></li>
+            <li><a><i class="fab fa-google-plus-g"></i></a></li>
+            <li><a><i class="fab fa-github"></i></a></li>
+          </div>
+
         </div>
       </section>
     </div>
