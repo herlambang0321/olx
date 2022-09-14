@@ -77,7 +77,6 @@ module.exports = function (db) {
     db.query('select * from ads left join users on ads.seller = users.id where ads.id = $1', [id], (err, data) => {
       if (err) return res.json({ err: err })
       if (data.rows.length == 0) return res.json({ err: 'data tidak ditemukan' })
-      console.log(data.rows[0])
       res.render('detail', {
         item: data.rows[0],
         formatter: helpers.formatter
