@@ -259,7 +259,7 @@ module.exports = function (db) {
       2,
       5,
       1200000,
-      ['1655891847327-gambar-rumah-minimalis-1.jpg', '1648005088625-Featured_Motor-Yamaha-Terbaru.jpg'],
+      ['1647957084006-036833900_1530992434-Mitsubishi-Pajero-Sport-Splash-Custom.jpg', '1648005088625-Featured_Motor-Yamaha-Terbaru.jpg'],
       true
     ]
     db.query('insert into ads (title, description, category, seller, price, pictures, approved) values ($1, $2, $3, $4, $5, $6, $7)',
