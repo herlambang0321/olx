@@ -76,7 +76,7 @@ module.exports = function (db) {
     const id = Number(req.params.id)
     db.query('select * from ads left join users on ads.seller = users.id where ads.id = $1', [id], (err, data) => {
       if (err) return res.json({ err: err })
-      if (data.rows.length == 0) return res.json({ err: 'data tidak ditemukan' })
+      if (data.rows.length == 0) return res.json({ err: 'data not found' })
       res.render('detail', {
         item: data.rows[0],
         formatter: helpers.formatter
@@ -100,7 +100,7 @@ module.exports = function (db) {
       db.query('insert into ads(title, description, category, seller, price, approved, pictures) values ($1, $2, $3, $4, $5, $6, $7)', [req.body.title, req.body.description, Number(req.body.category), req.session.user.id, Number(req.body.price), false, []], (err) => {
         if (err) {
           console.log(err)
-          req.flash('successMessage', `gagal bikin ads`)
+          req.flash('successMessage', `Failed to Create Ads`)
           return res.redirect('/')
         }
         res.redirect('/profile')
@@ -121,7 +121,7 @@ module.exports = function (db) {
         db.query('insert into ads(title, description, category, seller, price, approved, pictures) values ($1, $2, $3, $4, $5, $6, $7)', [req.body.title, req.body.description, Number(req.body.category), req.session.user.id, Number(req.body.price), false, fileNames], (err) => {
           if (err) {
             console.log(err)
-            req.flash('successMessage', `gagal bikin ads plus picture`)
+            req.flash('successMessage', `Failed to create ads plus image`)
             return res.redirect('/')
           }
           res.redirect('/profile')
@@ -139,7 +139,7 @@ module.exports = function (db) {
           db.query('insert into ads(title, description, category, seller, price, approved, pictures) values ($1, $2, $3, $4, $5, $6, $7)', [req.body.title, req.body.description, Number(req.body.category), req.session.user.id, Number(req.body.price), false, fileNames], (err) => {
             if (err) {
               console.log(err)
-              req.flash('successMessage', `gagal bikin ads plus picture`)
+              req.flash('successMessage', `Failed to create ads plus image`)
               return res.redirect('/')
             }
             res.redirect('/profile')
@@ -169,7 +169,7 @@ module.exports = function (db) {
       db.query('update users set fullname = $1, email = $2, phone = $3 where id = $4', [req.body.fullname, req.body.email, req.body.phone, id], (err) => {
         if (err) {
           console.log(err)
-          req.flash('successMessage', `gagal bikin user`)
+          req.flash('successMessage', `Failed to Create User`)
           return res.redirect('/profile')
         }
         res.redirect('/profile')
@@ -205,11 +205,11 @@ module.exports = function (db) {
 
     db.query('select * from users where email = $1', [email], (err, user) => {
       if (err) {
-        req.flash('loginMessage', 'Gagal Login')
+        req.flash('loginMessage', 'Login Failed')
         return res.redirect('/login')
       }
       if (user.rows.length == 0) {
-        req.flash('loginMessage', 'User Tidak Ditemukan')
+        req.flash('loginMessage', 'User Not Found')
         return res.redirect('/login')
       }
       bcrypt.compare(password, user.rows[0].pass, function (err, result) {
@@ -221,11 +221,10 @@ module.exports = function (db) {
             res.redirect('/')
           }
         } else {
-          req.flash('loginMessage', 'Password Salah')
+          req.flash('loginMessage', 'Wrong Password')
           res.redirect('/login')
         }
       });
-
     })
   });
 
