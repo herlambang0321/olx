@@ -43,8 +43,8 @@
                   <div class="col-sm-10">
                     <select class="form-control" id="isadmin" name="isadmin">
                       <option value="">--Pilih Role--</option>
-                      <option value="true" <%= query.isadmin=="true" ? " selected" : "" %>>Admin</option>
-                      <option value="false" <%= query.isadmin=="false" ? " selected" : "" %>>User</option>
+                      <option value="true" <%=query.isadmin=="true" ? " selected" : "" %>>Admin</option>
+                      <option value="false" <%=query.isadmin=="false" ? " selected" : "" %>>User</option>
                     </select>
                   </div>
                 </div>
@@ -55,7 +55,7 @@
               </div>
             </form>
           </div>
-          <table class="table table-striped">
+          <table id="user-table" class="table table-striped">
             <thead>
               <tr>
                 <th><a
@@ -110,4 +110,59 @@
           </nav>
           <a href="/users/add" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
     </div>
+
+    <!-- <script>
+      $(document).ready(function () {
+        loadData()
+
+        // const loadData = () => {
+        //   $.ajax({
+        //     url: "http://localhost:3000/users",
+        //     method: "GET",
+        //     dataType: "json"
+        //   }).done(function () {
+        //     let html = ''
+        //     data.forEach(item => {
+        //       html += `
+        //           <tr>
+        //             <td>${item.id}</td>
+        //             <td>${item.fullname}</td> 
+        //             <td>
+        //               <button type="button" data_id="${item.id}" class="btn btn-success"><i class="fa-solid fa-pencil"></i></button>
+        //               <button type="button" data_id= ${item.id}" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+        //             </td>
+        //           </tr>
+        //         `
+        //     });
+        //     $('#user-table tbody').html(html)
+        //   })
+        // }
+
+
+
+        const loadData = () => {
+          $.get(`/user`).done(function (data) {
+            console.log('load', data)
+            let html = ''
+            data.forEach(item => {
+              console.log('load', data)
+              html += `        
+              <tr>
+                <td>${item.id}</td>
+                <td>${item.fullname}</td> 
+                <td>
+                  <button type="button" data_id="${item.id}" class="btn btn-success"><i class="fa-solid fa-pencil"></i></button>
+                  <button type="button" data_id= ${item.id}" class="btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+            `
+            })
+            $('#user-table tbody').html(html)
+          })
+        }
+
+
+
+      });
+    </script> -->
     <%- include('../partials/footer') %>

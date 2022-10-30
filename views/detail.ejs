@@ -8,7 +8,17 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/carousel.css' />
     <link href="/fontawesome/css/all.css" rel="stylesheet">
+
     <style>
+        body {
+            /* background-color: rgb(1, 7, 9); */
+            background-color: blanchedalmond
+        }
+
+        img {
+            border-radius: 10px;
+        }
+
         .container {
             margin: 0;
             padding: 0;
@@ -16,8 +26,9 @@
 
         .carousel {
             margin: 20px;
+            padding: 40px;
             margin-top: 20px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             background-color: rgb(93, 192, 224);
             border-radius: 20px;
         }
@@ -28,7 +39,6 @@
             font-style: italic;
             font-family: "Times New Roman", Times, serif;
             text-decoration: underline;
-            /* text-decoration-thickness: auto; */
         }
 
         .box {
@@ -66,7 +76,7 @@
     </style>
 </head>
 
-<body style="background-image: url(https://tuntasmedia.com/wp-content/uploads/2017/07/518097-background-hd.jpg);">
+<body>
     <div class="container">
         <div class="header">
             <h1>
@@ -75,7 +85,6 @@
         </div>
         <div class="carousel">
             <div class="slideshow-container">
-
                 <% item.pictures.forEach((picture, index)=> { %>
                     <div class="mySlides fade">
                         <div class="numbertext">
@@ -91,8 +100,7 @@
                         <a class="next" style="color: black;" onclick="plusSlides(1)">&#10095;</a>
 
             </div>
-            <br>
-
+            <br />
             <div style="text-align:center">
                 <% item.pictures.forEach((picture, index)=> { %>
                     <%- `<span class="dot" onclick="currentSlide(${index + 1})"></span>` %>
