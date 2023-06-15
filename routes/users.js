@@ -165,9 +165,5 @@ module.exports = function (db) {
         }
     })
 
-    router.get('/password', function (err, res) {
-        res.render('password')
-    })
-
     return router;
 }

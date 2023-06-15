@@ -6,7 +6,7 @@ module.exports = {
             res.redirect('/login')
         }
     },
-    formatter: new Intl.NumberFormat('en-US', {
+    formatter: new Intl.NumberFormat('id', {
         style: 'currency',
         currency: 'IDR',
         // These options are needed to round to whole numbers if that's what you want.

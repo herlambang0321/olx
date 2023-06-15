@@ -251,6 +251,44 @@ module.exports = function (db) {
     })
   })
 
+  router.get('/changepassword', helpers.isLoggedIn, async function (req, res, next) {
+    try {
+      res.render('changepassword', {
+        user: req.session.user,
+        successMessage: req.flash('successMessage'),
+        errorMessage: req.flash('errorMessage'),
+        isAdmin: req.session.user.isadmin
+      });
+    } catch (err) {
+      res.send(err);
+    }
+  });
+
+  router.post('/changepassword', helpers.isLoggedIn, async function (req, res, next) {
+    try {
+      const { oldpassword, newpassword, retypepassword } = req.body;
+      const { rows } = await db.query('SELECT * FROM users WHERE id = $1', [req.session.user.id]);
+
+      if (newpassword != retypepassword) {
+        req.flash('errorMessage', "retype password doesn't match");
+        return res.redirect('/changepassword');
+      }
+
+      if (!bcrypt.compareSync(oldpassword, rows[0].pass)) {
+        req.flash('errorMessage', "your old password is wrong");
+        return res.redirect('/changepassword');
+      }
+
+      const hash = bcrypt.hashSync(newpassword, saltRounds);
+      await db.query('UPDATE users SET pass = $1 WHERE id = $2', [hash, req.session.user.id]);
+
+      req.flash('successMessage', 'your password has been updated');
+      res.redirect('/changepassword');
+    } catch (err) {
+      res.send(err);
+    }
+  });
+
   router.get('/seed', function (req, res) {
     const values = [
       'example ads',

@@ -80,7 +80,9 @@
                   </td>
                   <td>
                     <a href="/users/edit/<%= item.id %>" class="btn btn-success"><i class="fa-solid fa-pencil"></i></a>
-                    <a href="/users/delete/<%= item.id %>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                    <a href="/users/delete/<%= item.id %>"
+                      onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger"><i
+                        class="fa-solid fa-trash"></i></a>
                   </td>
                 </tr>
                 <% }) %>

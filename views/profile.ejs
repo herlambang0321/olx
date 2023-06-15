@@ -67,7 +67,7 @@
                         <label for="pass" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-10">
                             <% if(data.id) { %>
-                                <a href="/users/password" class="btn btn-success">Change Password</a>
+                                <a href="/changepassword" class="btn btn-success">Change Password</a>
                                 <% } else { %>
                                     <input type="password" class="form-control" id="pass" name="pass"
                                         value="<%= data.pass %>" required>
@@ -144,7 +144,7 @@
     <script>
         $(document).ready(function () {
             const table = $('#example').DataTable({
-                "lengthMenu": [[1, 2, 3, -1], [1, 2, 3, 'All']],
+                "lengthMenu": [[3, 10, 100, -1], [3, 10, 100, 'All']],
                 "processing": true,
                 "serverSide": true,
                 "ajax": "/ads/data",
